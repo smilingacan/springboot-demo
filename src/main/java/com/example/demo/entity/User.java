@@ -46,7 +46,7 @@ public class User {
     }
 
     public String userToString(){
-        return "User{" +
+        return "sys_user{" +
                 "id=" + id +
                 ", userName='" + userName + '\'' +
                 ", passWord='" + passWord + '\'' +

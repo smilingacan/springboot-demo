@@ -10,14 +10,14 @@
     </resultMap>
 
     <select id="selectFromId" resultType="com.example.demo.entity.User">
-        select * from user where id = #{id}
+        select * from sys_user where id = #{id}
     </select>
 
     <select id="login" resultType="com.example.demo.entity.User">
-        select * from user where userName = #{param1} and passWord = #{param2}
+        select * from sys_user where userName = #{param1} and passWord = #{param2}
     </select>
 
     <insert id="register" parameterType="com.example.demo.entity.User">
-        insert into user (userName, passWord) values (#{userName}, #{passWord})
+        insert into sys_user(userName, passWord) values (#{userName}, #{passWord})
     </insert>
 </mapper>
