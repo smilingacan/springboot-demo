@@ -1,6 +1,6 @@
 package com.example.demo.mapper;
 
-import com.example.demo.entity.User;
+import com.example.demo.entity.SysUser;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -13,7 +13,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserMapper {
-    User selectFromId(int id);
-    User login(String userName, String passWord);
-    int register(User user);
+    SysUser selectFromId(int id);
+    SysUser login(String userName, String passWord);
+    SysUser loginForPass(String userName);
+    int register(SysUser sysUser);
+    SysUser findUserByName(String userName);
 }
