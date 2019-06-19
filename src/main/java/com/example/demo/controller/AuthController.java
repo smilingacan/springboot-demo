@@ -39,22 +39,22 @@ public class AuthController {
         return "login";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView login(SysUser sysUser, HttpServletRequest httpServletRequest){
-        String passEncode = passwordEncoder.encode(sysUser.getPassword());
-        SysUser userInDB = userService.loginForPass(sysUser.getUsername());
-
-        Boolean ifLoginSuccess = passwordEncoder.matches(sysUser.getPassword(), userInDB.getPassword());
-        if(ifLoginSuccess){
-            httpServletRequest.getSession().setAttribute("session_user", sysUser);
-            ModelAndView mav = new ModelAndView("index");  //根据不同逻辑返回不同页面或者json
-            return mav;
-        }else {
-            ModelAndView mav = new ModelAndView(new MappingJackson2JsonView());
-            mav.addObject("result", "failed");
-            return mav;
-        }
-    }
+//    @PostMapping("/login")
+//    public ModelAndView login(SysUser sysUser, HttpServletRequest httpServletRequest){
+//        String passEncode = passwordEncoder.encode(sysUser.getPassword());
+//        SysUser userInDB = userService.loginForPass(sysUser.getUsername());
+//
+//        Boolean ifLoginSuccess = passwordEncoder.matches(sysUser.getPassword(), userInDB.getPassword());
+//        if(ifLoginSuccess){
+//            httpServletRequest.getSession().setAttribute("session_user", sysUser);
+//            ModelAndView mav = new ModelAndView("welcome");  //根据不同逻辑返回不同页面或者json
+//            return mav;
+//        }else {
+//            ModelAndView mav = new ModelAndView(new MappingJackson2JsonView());
+//            mav.addObject("result", "failed");
+//            return mav;
+//        }
+//    }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String toRegister(){
@@ -63,23 +63,57 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(SysUser sysUser){
-        int u = userService.register(new SysUser(sysUser.getUsername(), passwordEncoder.encode(sysUser.getPassword())));
-        if(u == 0){
-            System.out.println("注册失败");
+        if((sysUser.getUsername() == null) || (sysUser.getPassword()) == null){
             return "register";
+        }else {
+            int u = userService.register(new SysUser(sysUser.getUsername(), passwordEncoder.encode(sysUser.getPassword())));
+            if(u == 0){
+                System.out.println("注册失败");
+                return "register";
+            }
+            return "login";
         }
-        return "index";
+    }
+
+    @RequestMapping("/welcome")
+    public String welcome(){
+        return "welcome";
     }
 
     @RequestMapping("/logout")
     public void logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException{
         httpServletRequest.getSession().removeAttribute("session_user");
-        httpServletResponse.sendRedirect("/login");
+        httpServletResponse.sendRedirect("/index");
     }
 
     @ResponseBody
-    @RequestMapping("getUser/{id}")
+    @RequestMapping("/user/getUser/{id}")
     public String getUser(@PathVariable int id){
         return userService.selectFromId(id).userToString();
+    }
+
+    @RequestMapping("/admin")
+    @ResponseBody
+    public String hello(){
+        return "hello admin";
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    @ResponseBody
+    public String getList(){
+        return "hello getList";
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    @ResponseBody
+    public String save(){
+        return "hello save";
+    }
+
+
+    @RequestMapping(value = "/user", method = RequestMethod.PUT)
+    @ResponseBody
+    public String update(){
+        return "hello update";
     }
 }
