@@ -47,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //http.authorizeRequests()每个匹配器按照它们被声明的顺序被考虑。
         http.rememberMe()//开启cookie保存用户数据
             //设置cookie有效期
-            .tokenValiditySeconds(60 * 60 * 24 * 7)
+            .tokenValiditySeconds(7*24*24*60)
             //设置cookie的私钥
             .key("security")
             .and()
@@ -57,6 +57,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             // ROLE_USER的权限才能访问的资源
             .antMatchers("/").permitAll()
             .antMatchers("/register").permitAll()
+            .antMatchers("/ws/**").permitAll()
+            .antMatchers("/websocket").permitAll()
             // 任何尚未匹配的URL只需要验证用户即可访问
             .anyRequest().authenticated()
             .and()
@@ -66,9 +68,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             //设置默认登录成功跳转页面,错误回到login界面
             .defaultSuccessUrl("/index").failureUrl("/login?error").permitAll()
             .and()
-            .logout()
-            .permitAll()
-            .and().csrf().disable();
+            .logout().permitAll()
+            .and()
+            .csrf().disable()
+            .sessionManagement()
+            .invalidSessionUrl("/login")
+            .maximumSessions(1)
+            .expiredUrl("/login");
 
         //登录拦截器
 //        http.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class)

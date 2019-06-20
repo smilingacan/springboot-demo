@@ -1,5 +1,8 @@
 server:
   port: 1314
+  servlet:
+    session:
+      timeout: 86400
 
 spring:
   datasource:
@@ -22,7 +25,10 @@ mybatis:
 
 #showSql
 logging:
+  pattern:
+    console: "%d - %msg%n"
   level:
+    root: info
     com:
       example:
-        mapper : debug
+        demo : debug
