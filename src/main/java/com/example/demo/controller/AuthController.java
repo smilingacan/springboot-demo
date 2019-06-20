@@ -96,11 +96,12 @@ public class AuthController {
         httpServletResponse.sendRedirect("/index");
     }
 
+    //dataType默认是String，不需要设置成Integer
     @ApiOperation(value="获取用户信息", notes="根据用户ID获取用户信息")
-    @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "Integer")
+    @ApiImplicitParam(name = "id", value = "用户ID", required = true)
     @ResponseBody
     @RequestMapping(value = "/user/getUser/{id}", method = RequestMethod.GET)
-    public String getUser(@PathVariable int id){
+    public String getUser(@PathVariable Integer id){
         return userService.selectFromId(id).userToString();
     }
 
