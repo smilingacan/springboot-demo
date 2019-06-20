@@ -1,11 +1,13 @@
 package com.example.demo.config;
 
 import com.example.demo.service.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -45,36 +47,36 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //http.authorizeRequests()每个匹配器按照它们被声明的顺序被考虑。
-        http.rememberMe()//开启cookie保存用户数据
-            //设置cookie有效期
-            .tokenValiditySeconds(7*24*24*60)
-            //设置cookie的私钥
-            .key("security")
-            .and()
-            .authorizeRequests()
-            // 所有用户均可访问的资源
-            .antMatchers("/css/**", "/js/**", "/images/**", "/webjars/**", "**/favicon.ico").permitAll()
-            // ROLE_USER的权限才能访问的资源
-            .antMatchers("/").permitAll()
-            .antMatchers("/register").permitAll()
-            .antMatchers("/ws/**").permitAll()
-            .antMatchers("/websocket").permitAll()
-            // 任何尚未匹配的URL只需要验证用户即可访问
-            .anyRequest().authenticated()
-            .and()
-            .formLogin()
-            // 指定登录页面,授予所有用户访问登录页面
-            .loginPage("/login")
-            //设置默认登录成功跳转页面,错误回到login界面
-            .defaultSuccessUrl("/index").failureUrl("/login?error").permitAll()
-            .and()
-            .logout().permitAll()
-            .and()
-            .csrf().disable()
-            .sessionManagement()
-            .invalidSessionUrl("/login")
-            .maximumSessions(1)
-            .expiredUrl("/login");
+//        http.rememberMe()//开启cookie保存用户数据
+//            //设置cookie有效期
+//            .tokenValiditySeconds(7*24*24*60)
+//            //设置cookie的私钥
+//            .key("security")
+//            .and()
+//            .authorizeRequests()
+//            // 所有用户均可访问的资源
+//            .antMatchers("/css/**", "/js/**", "/images/**", "/webjars/**", "**/favicon.ico").permitAll()
+//            // ROLE_USER的权限才能访问的资源
+//            .antMatchers("/").permitAll()
+//            .antMatchers("/register").permitAll()
+//            .antMatchers("/ws/**").permitAll()
+//            .antMatchers("/websocket").permitAll()
+//            // 任何尚未匹配的URL只需要验证用户即可访问
+//            .anyRequest().authenticated()
+//            .and()
+//            .formLogin()
+//            // 指定登录页面,授予所有用户访问登录页面
+//            .loginPage("/login")
+//            //设置默认登录成功跳转页面,错误回到login界面
+//            .defaultSuccessUrl("/index").failureUrl("/login?error").permitAll()
+//            .and()
+//            .logout().permitAll()
+//            .and()
+//            .csrf().disable()
+//            .sessionManagement()
+//            .invalidSessionUrl("/login")
+//            .maximumSessions(1)
+//            .expiredUrl("/login");
 
         //登录拦截器
 //        http.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class)
